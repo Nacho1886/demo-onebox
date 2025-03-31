@@ -1,0 +1,12 @@
+{
+    "angular-schematics.schematicsDefaultOptions": {
+      "angular-*": {
+        "skipStyle": true,
+        "externalTemplate": true
+      }
+    },
+    "css.lint.unknownAtRules": "ignore",
+    "conventionalCommits.scopes": [
+      "config"
+    ]
+}

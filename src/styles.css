@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: theme("colors.white");
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header"
+    "main";
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+router-outlet {
+  display: contents;
+}
+
+@theme {
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #87ceeb;
+  --color-primary-400: #4eb5dd;
+  --color-primary-500: #008cba;
+  --color-primary-600: #0077a5;
+  --color-primary-700: #00638a;
+  --color-primary-800: #00506f;
+  --color-primary-900: #003f59;
+  --color-primary-950: #002a3d;
+}
