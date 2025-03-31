@@ -1,6 +1,7 @@
 import { HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
-import { HttpRequest, HttpErrorResponse } from '@angular/common/http';
+import { HttpRequest, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Constants for URLs and event data
@@ -9,7 +10,7 @@ const LOCALHOST_URL = 'http://localhost:4200';
 const ASSETS_PATH = '/assets/data';
 
 const ENDPOINTS = {
-  EVENT: 'event',
+  EVENTS: 'events',
   EVENT_DETAIL: 'event-detail',
 } as const;
 
@@ -24,7 +25,7 @@ export const eventInterceptor: HttpInterceptorFn = (req, next) => {
   if (isEventRequest(req, ENDPOINTS.EVENT_DETAIL)) {
     return handleEventDetailRequest(req, next);
   }
-  if (isEventRequest(req, ENDPOINTS.EVENT)) {
+  if (isEventRequest(req, ENDPOINTS.EVENTS)) {
     return handleEventRequest(req, next);
   }
   return next(req);
@@ -42,11 +43,23 @@ function handleEventRequest(
 ): Observable<any> {
   const eventId = extractEventId(req);
 
-  if (eventId && isValidEventId(eventId)) {
-    return next(req.clone({ url: buildEventUrl(eventId) }));
-  } else {
-    return next(req.clone({ url: buildEventsListUrl() }));
-  }
+  return next(req.clone({ url: buildEventsListUrl() })).pipe(
+    map((eventListResponse) => {
+      if (eventId) {
+        const events = (eventListResponse as HttpResponse<any>).body;
+        const event = events.find((e: any) => e.id === eventId);
+        if (!event) {
+          throw new HttpErrorResponse({
+            error: 'Event not found',
+            status: 404,
+          });
+        }
+        return new HttpResponse({ body: event });
+      }
+      return eventListResponse;
+    }),
+    catchError((error) => throwError(() => error))
+  );
 }
 
 /** Handles the event detail request and returns mock data from assets if the event ID is valid */
@@ -71,18 +84,14 @@ function handleEventDetailRequest(
 
 /** Extracts the event ID from the request URL */
 function extractEventId(req: HttpRequest<any>): string | null {
-  const eventId = req.url.split('/').pop();
-  return eventId ?? null;
+  const parts = req.url.split('/');
+  const eventId = parts.pop();
+  return eventId && VALID_EVENT_IDS.has(eventId) ? eventId : null;
 }
 
 /** Checks if the event ID is valid */
 function isValidEventId(eventId: string): boolean {
-  return eventId ? VALID_EVENT_IDS.has(eventId) : false;
-}
-
-/** Builds the URL for a specific event */
-function buildEventUrl(eventId: string): string {
-  return `${LOCALHOST_URL}${ASSETS_PATH}/event-info-${eventId}.json`;
+  return VALID_EVENT_IDS.has(eventId);
 }
 
 /** Builds the URL for the events list */
