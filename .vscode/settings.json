@@ -8,6 +8,7 @@
     "css.lint.unknownAtRules": "ignore",
     "conventionalCommits.scopes": [
       "config",
-      "core"
+      "core",
+      "catalog-page"
     ]
 }

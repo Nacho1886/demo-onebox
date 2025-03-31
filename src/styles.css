@@ -1,21 +1,29 @@
 @import "tailwindcss";
 
 body {
-  font-family: "Roboto", sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: theme("colors.white");
+  @apply font-sans m-0 p-0 bg-white;
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-areas:
     "header"
     "main";
   min-height: 100vh;
+  height: 100vh;
   box-sizing: border-box;
 }
 
+header {
+  grid-area: header;
+  @apply sticky top-0 z-10;
+}
+
+main {
+  grid-area: main;
+  @apply overflow-y-auto;
+}
+
 router-outlet {
-  display: contents;
+  @apply hidden;
 }
 
 @theme {
