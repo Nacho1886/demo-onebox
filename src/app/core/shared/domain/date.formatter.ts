@@ -1,13 +1,15 @@
 export class DateFormatter {
-  public static format(date: Date): string {
-    return date.toUTCString();
+  public static toISO(date: Date): string {
+    return date.toISOString();
   }
 
   public static parse(date: string | number): Date {
-    const timestamp = Number(date);
-    if (isNaN(timestamp)) {
+    const parsedDate = new Date(Number(date) || date);
+
+    if (isNaN(parsedDate.getTime())) {
       throw new Error(`Invalid date format: ${date}`);
     }
-    return new Date(timestamp);
+
+    return parsedDate;
   }
 }

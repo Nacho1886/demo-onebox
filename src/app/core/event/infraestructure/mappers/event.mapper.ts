@@ -2,7 +2,7 @@ import { DateFormatter } from '@app/core/shared/domain/date.formatter';
 import { Event } from 'src/app/core/event/domain/models/event.model';
 
 export class EventMapper {
-  toEvent(data: Record<string, any>): Event {
+  mapToEvent(data: Record<string, any>): Event {
     return {
       id: data['id'],
       title: data['title'],

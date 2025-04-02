@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { EventInfoRepository } from '@app/core/event/domain/repositories/event-info.repository';
 import { EventInfoMapper } from '@app/core/event/infraestructure/mappers/event-detail.mapper';
 import { environment } from '@env/environment';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { EventInfo } from '@app/core/event/domain/models/event-info.model';
 
 @Injectable({
@@ -20,8 +20,11 @@ export class EventInfoDataRepository implements EventInfoRepository {
   }
 
   getEventInfo(id: string): Observable<EventInfo> {
-    return this.http
-      .get<any>(`${this.endpoint}/${id}`)
-      .pipe(map((data) => this.eventInfoMapper.mapToEventInfo(data)));
+    return this.http.get<Record<string, any>>(`${this.endpoint}/${id}`).pipe(
+      map((data) => this.eventInfoMapper.mapToEventInfo(data)),
+      tap((event) =>
+        event.sessions.sort((a, b) => a.date.getTime() - b.date.getTime()),
+      ),
+    );
   }
 }

@@ -21,7 +21,7 @@ export class EventDataRepository implements EventRepository {
 
   getEvents(): Observable<Event[]> {
     return this.http.get<Record<string, any>[]>(this.endpoint).pipe(
-      map((data) => data.map((item) => this.eventMapper.toEvent(item))),
+      map((data) => data.map((item) => this.eventMapper.mapToEvent(item))),
       map((events) =>
         events.sort((a, b) => a.endDate.getTime() - b.endDate.getTime()),
       ),
@@ -31,6 +31,6 @@ export class EventDataRepository implements EventRepository {
   getEventById(id: string): Observable<Event> {
     return this.http
       .get<Record<string, any>>(`${this.endpoint}/${id}`)
-      .pipe(map((data) => this.eventMapper.toEvent(data)));
+      .pipe(map((data) => this.eventMapper.mapToEvent(data)));
   }
 }
