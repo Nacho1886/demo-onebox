@@ -6,10 +6,5 @@
     }
   },
   "css.lint.unknownAtRules": "ignore",
-  "conventionalCommits.scopes": [
-    "config",
-    "core",
-    "catalog-page",
-    "event-info"
-  ]
+  "conventionalCommits.scopes": ["config", "core", "catalog-page", "event-info"]
 }
