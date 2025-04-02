@@ -2,13 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  linkedSignal,
-  Signal,
+  resource,
+  ResourceRef,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { Event } from '@app/core/event/domain/models/event.model';
 import { EventRepository } from '@app/core/event/domain/repositories/event.repository';
 import { EventCardComponent } from '@app/presentation/components/event-card/event-card.component';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'main[app-catalog]',
@@ -19,7 +19,8 @@ import { EventCardComponent } from '@app/presentation/components/event-card/even
 export default class CatalogComponent {
   private readonly eventRepository = inject(EventRepository);
 
-  $events: Signal<Event[]> = toSignal(this.eventRepository.getAll(), {
-    initialValue: [],
+  eventsResource: ResourceRef<Event[]> = resource({
+    loader: () => lastValueFrom(this.eventRepository.getEvents()),
+    defaultValue: [],
   });
 }

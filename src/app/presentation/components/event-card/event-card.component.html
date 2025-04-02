@@ -1,31 +1,39 @@
 @let event = $event();
-<div class="max-w-sm border border-gray-300 shadow-md h-full bg-white flex flex-col">
+<div
+  class="max-w-sm border border-gray-300 shadow-md h-full bg-white flex flex-col"
+>
   <div class="p-4">
     <h2 class="text-primary-500 text-sm font-semibold">
-      <a [routerLink]="[RouteName.event, event.id]" class="hover:underline">
+      <a
+        [routerLink]="['/', RouteName.event, event.id]"
+        class="hover:underline"
+      >
         {{ event.title }}
       </a>
     </h2>
     <p class="text-primary-500 text-xs">
-      <a [routerLink]="[RouteName.event, event.id]" class="hover:underline">
+      <a
+        [routerLink]="['/', RouteName.event, event.id]"
+        class="hover:underline"
+      >
         {{ event.subtitle }}
       </a>
     </p>
     <p class="text-xs text-gray-600 mt-2">{{ event.place }}</p>
   </div>
-  <a [routerLink]="[RouteName.event, event.id]">
+  <a [routerLink]="['/', RouteName.event, event.id]">
     <img [src]="event.image" [alt]="event.title" class="w-full" />
   </a>
   <div class="p-4 text-xs text-gray-600 flex-1">
     <p>
-      {{ event.startDate | date : "dd/MM/yyyy" }} -
-      {{ event.endDate | date : "dd/MM/yyyy" }}
+      {{ event.startDate | date: "dd/MM/yyyy" }} -
+      {{ event.endDate | date: "dd/MM/yyyy" }}
     </p>
     <p class="mt-2 hidden md:block" [innerHTML]="event.description"></p>
   </div>
   <div class="bg-primary-500 text-white text-center py-2">
     <a
-      [routerLink]="[RouteName.event, event.id]"
+      [routerLink]="['/', RouteName.event, event.id]"
       class="text-xs font-semibold block"
     >
       Comprar

@@ -1,7 +1,11 @@
 import { HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
-import { HttpRequest, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import {
+  HttpRequest,
+  HttpErrorResponse,
+  HttpResponse,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, delay, map } from 'rxjs/operators';
 
 /**
  * Constants for URLs and event data
@@ -11,7 +15,7 @@ const ASSETS_PATH = '/assets/data';
 
 const ENDPOINTS = {
   EVENTS: 'events',
-  EVENT_DETAIL: 'event-detail',
+  EVENT_INFO: 'event-info',
 } as const;
 
 type Endpoint = (typeof ENDPOINTS)[keyof typeof ENDPOINTS];
@@ -22,8 +26,8 @@ const VALID_EVENT_IDS = new Set(['68', '184']);
  * HTTP Event Interceptor as a function
  */
 export const eventInterceptor: HttpInterceptorFn = (req, next) => {
-  if (isEventRequest(req, ENDPOINTS.EVENT_DETAIL)) {
-    return handleEventDetailRequest(req, next);
+  if (isEventRequest(req, ENDPOINTS.EVENT_INFO)) {
+    return handleEventInfoRequest(req, next);
   }
   if (isEventRequest(req, ENDPOINTS.EVENTS)) {
     return handleEventRequest(req, next);
@@ -39,7 +43,7 @@ function isEventRequest(req: HttpRequest<any>, endpoint: Endpoint): boolean {
 /** Handles the event request, returns mock data from assets */
 function handleEventRequest(
   req: HttpRequest<any>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<any> {
   const eventId = extractEventId(req);
 
@@ -58,14 +62,14 @@ function handleEventRequest(
       }
       return eventListResponse;
     }),
-    catchError((error) => throwError(() => error))
+    catchError((error) => throwError(() => error)),
   );
 }
 
-/** Handles the event detail request and returns mock data from assets if the event ID is valid */
-function handleEventDetailRequest(
+/** Handles the event info request and returns mock data from assets if the event ID is valid */
+function handleEventInfoRequest(
   req: HttpRequest<any>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<any> {
   const eventId = extractEventId(req);
 
@@ -73,13 +77,15 @@ function handleEventDetailRequest(
     return throwError(
       () =>
         new HttpErrorResponse({
-          error: 'No data available for the provided event detail ID',
+          error: 'Event info not found',
           status: 404,
-        })
+        }),
     );
   }
 
-  return next(req.clone({ url: buildEventDetailUrl(eventId) }));
+  return next(req.clone({ url: buildEventInfoUrl(eventId) })).pipe(
+    delay(1500), // Simulate network delay
+  );
 }
 
 /** Extracts the event ID from the request URL */
@@ -99,7 +105,7 @@ function buildEventsListUrl(): string {
   return `${LOCALHOST_URL}${ASSETS_PATH}/events.json`;
 }
 
-/** Builds the URL for the event detail */
-function buildEventDetailUrl(eventId: string): string {
+/** Builds the URL for the event info */
+function buildEventInfoUrl(eventId: string): string {
   return `${LOCALHOST_URL}${ASSETS_PATH}/event-info-${eventId}.json`;
 }

@@ -1,14 +1,15 @@
 {
-    "angular-schematics.schematicsDefaultOptions": {
-      "angular-*": {
-        "skipStyle": true,
-        "externalTemplate": true
-      }
-    },
-    "css.lint.unknownAtRules": "ignore",
-    "conventionalCommits.scopes": [
-      "config",
-      "core",
-      "catalog-page"
-    ]
+  "angular-schematics.schematicsDefaultOptions": {
+    "angular-*": {
+      "skipStyle": true,
+      "externalTemplate": true
+    }
+  },
+  "css.lint.unknownAtRules": "ignore",
+  "conventionalCommits.scopes": [
+    "config",
+    "core",
+    "catalog-page",
+    "event-detail"
+  ]
 }

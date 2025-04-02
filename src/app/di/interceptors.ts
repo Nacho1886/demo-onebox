@@ -4,9 +4,7 @@ import { eventInterceptor } from '@app/core/event/infraestructure/interceptors/e
 /**
  * HTTP Event Interceptors
  */
-const INTERCEPTORS: HttpInterceptorFn[] = [
-  eventInterceptor,
-];
+const INTERCEPTORS: HttpInterceptorFn[] = [eventInterceptor];
 
 /**
  * Function to provide all application interceptors

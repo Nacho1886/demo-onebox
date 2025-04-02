@@ -1,15 +1,15 @@
 import { DateFormatter } from '@app/core/shared/domain/date.formatter';
-import { EventDetail } from 'src/app/core/event/domain/models/event-detail.model';
+import { EventInfo } from '@app/core/event/domain/models/event-info.model';
 import { Session } from 'src/app/core/event/domain/models/session.model';
 
-export class EventDetailMapper {
-  toEventDetail(data: Record<string, any>): EventDetail {
+export class EventInfoMapper {
+  mapToEventInfo(data: Record<string, any>): EventInfo {
     return {
-      id: data["event"].id,
-      title: data["event"].title,
-      subtitle: data["event"].subtitle,
-      image: data["event"].image,
-      sessions: data["sessions"].map(this.mapSession),
+      id: data['event'].id,
+      title: data['event'].title,
+      subtitle: data['event'].subtitle,
+      image: data['event'].image,
+      sessions: data['sessions'].map(this.mapSession),
     };
   }
 

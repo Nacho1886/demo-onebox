@@ -1,4 +1,4 @@
-import { EventBase } from "@app/core/event/domain/models/event-base.model";
+import { EventBase } from '@app/core/event/domain/models/event-base.model';
 
 export interface Event extends EventBase {
   place: string;

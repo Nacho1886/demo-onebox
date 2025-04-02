@@ -5,7 +5,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'bg-primary-300 text-black text-center py-4 shadow-[0_8px_8px_rgba(0,0,0,0.8)]'
-  }
+    class:
+      'bg-primary-300 text-black text-center py-4 shadow-[0_8px_8px_rgba(0,0,0,0.8)]',
+  },
 })
-export class HeaderComponent { }
+export class HeaderComponent {}

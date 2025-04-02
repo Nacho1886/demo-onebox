@@ -2,7 +2,7 @@ import {
   ApplicationConfig,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import {
   provideClientHydration,
@@ -20,9 +20,8 @@ import {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withFetch(), withInterceptors(provideAppInterceptors())),
-    provideClientHydration(withEventReplay()),
     provideAppProviders(),
   ],
 };

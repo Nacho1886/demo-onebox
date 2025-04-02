@@ -19,16 +19,16 @@ export class EventDataRepository implements EventRepository {
     return `${environment.SERVER_URL}/${this.ENDPOINT_PATH}`;
   }
 
-  getAll(): Observable<Event[]> {
+  getEvents(): Observable<Event[]> {
     return this.http.get<Record<string, any>[]>(this.endpoint).pipe(
       map((data) => data.map((item) => this.eventMapper.toEvent(item))),
       map((events) =>
-        events.sort((a, b) => a.endDate.getTime() - b.endDate.getTime())
-      )
+        events.sort((a, b) => a.endDate.getTime() - b.endDate.getTime()),
+      ),
     );
   }
 
-  getById(id: string): Observable<Event> {
+  getEventById(id: string): Observable<Event> {
     return this.http
       .get<Record<string, any>>(`${this.endpoint}/${id}`)
       .pipe(map((data) => this.eventMapper.toEvent(data)));
