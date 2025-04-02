@@ -16,6 +16,8 @@ export const routes: Routes = [
   },
   {
     path: `${RouteName.event}/:id`,
+    loadComponent: () =>
+      import('@app/presentation/pages/event-info/event-info.component'),
   },
   { path: '**', redirectTo: RouteName.catalog, pathMatch: 'full' },
 ];

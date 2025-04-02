@@ -1,0 +1,41 @@
+@if ($eventInfo(); as event) {
+  <div class="flex flex-col border border-gray-300 p-4 shadow-sm space-y-2">
+    @for (session of event.sessions; track $index) {
+      <div class="grid grid-cols-7 gap-2">
+        <div
+          class="col-span-3 text-sm font-medium text-gray-500 size-full flex items-center"
+        >
+          Fecha: {{ session.date | date: "dd/MM/yyyy" }}
+        </div>
+
+        <div
+          class="col-span-3 text-sm font-medium text-gray-500 size-full flex items-center"
+        >
+          Disponibilidad: {{ session.availability }}
+        </div>
+
+        <div class="col-span-1 flex items-center justify-between space-x-2">
+          <button
+            class="cursor-pointer text-primary-500 hover:text-primary-600 disabled:text-gray-400"
+            (click)="removeSessionFromCart(session.date)"
+            [disabled]="!canRemoveSession(session.date)"
+          >
+            -
+          </button>
+
+          <span class="font-semibold text-gray-700">
+            {{ getSelectedSeats(session.date) }}
+          </span>
+
+          <button
+            class="cursor-pointer text-primary-500 hover:text-primary-600 disabled:text-gray-400"
+            (click)="addSessionToCart(session.date)"
+            [disabled]="!canAddSession(session.date)"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}

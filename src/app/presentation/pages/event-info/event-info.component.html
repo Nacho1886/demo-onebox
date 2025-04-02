@@ -1,0 +1,32 @@
+<span
+  class="text-primary-500 cursor-pointer self-end"
+  [routerLink]="['/', RouteName.catalog]"
+>
+  Volver
+</span>
+@switch (eventInfoResource.status()) {
+  @case (ResourceStatus.Resolved) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <app-sessions-list
+        [eventInfo]="eventInfoResource.value()"
+        [(cart)]="cartResource.value"
+      />
+      <app-shopping-cart [(cart)]="cartResource.value" />
+    </div>
+  }
+  @case (ResourceStatus.Error) {
+    <p class="size-full text-center font-bold">
+      <span class="flex justify-center items-center size-full">
+        {{ getErrorMessage(eventInfoResource.error()) | uppercase }}
+      </span>
+    </p>
+  }
+  @case (ResourceStatus.Loading) {
+    <div class="flex gap-4 justify-center items-center size-full">
+      <div
+        class="w-8 h-8 border-4 border-t-primary-500 border-transparent rounded-full animate-spin"
+      ></div>
+      <span>Loading...</span>
+    </div>
+  }
+}
